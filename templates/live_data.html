@@ -1,0 +1,15 @@
+<!-- live_data.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Data</title>
+    {{ graph_html|safe }}
+</head>
+<body>
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 5000); // Refresh the page every 5 seconds (5000 milliseconds)
+    </script>
+</body>
+</html>
