@@ -34,30 +34,54 @@ def signup(request):
     return render(request,'signup.html')
 
 def live_data(request):
-    data = yf.download(tickers='BTC-USD', period='5d', interval='15m')
-    latest_price = data.iloc[-1]['Close']
-    prices = data['Close']
+    if request.method == "POST":
+        selected_option = request.POST.get('select')
+        ticker = None
+        if selected_option == 'Bitcoin':
+            ticker = 'BTC-USD'
+        elif selected_option == 'Etherum':
+            ticker = 'ETH-USD'
+        elif selected_option == 'Tether':
+            ticker = 'USDT-USD'
+        elif selected_option == 'BNB':
+            ticker = 'BNB-USD'
+        elif selected_option == 'XRP':
+            ticker = 'XRP-USD'
+        elif selected_option == 'DOGE':
+            ticker = 'DOGE-USD'
 
-    # Create a line graph using Plotly
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data.index, y=prices, mode='lines', name='Price'))
+        if ticker:
+            data = yf.download(tickers=ticker, period='5d', interval='15m')
+            latest_price = data.iloc[-1]['Close']
+            prices = data[['Open', 'High', 'Low', 'Close']]
 
-    # Customize the graph layout
-    fig.update_layout(
-        title='Bitcoin Price',
-        xaxis_title='Date',
-        yaxis_title='Price',
-        showlegend=True
-    )
+            # Create a candlestick graph using Plotly
+            fig = go.Figure(data=[go.Candlestick(x=data.index,
+                                                 open=prices['Open'],
+                                                 high=prices['High'],
+                                                 low=prices['Low'],
+                                                 close=prices['Close'])])
 
-    # Convert the graph to HTML and pass it to the template
-    graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+            # Customize the graph layout
+            fig.update_layout(
+                title=f'{selected_option} Price',
+                xaxis_title='Date',
+                yaxis_title='Price',
+                showlegend=True
+            )
 
-    context = {
-        'graph_html': graph_html,
-    }
+            # Convert the graph to HTML and pass it to the template
+            graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
 
-    return render(request, 'live_data.html', context)
+            context = {
+                'graph_html': graph_html,
+            }
+
+            return render(request, 'live_data.html', context)
+
+    # For GET requests or when no option is selected
+    return render(request, 'live_data.html')
+
 
 
 def my_view(request):
