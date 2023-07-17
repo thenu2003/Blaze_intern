@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <title>Card Example</title>
@@ -30,10 +31,10 @@
         }
         
         .card:hover {
-            background-color: #f2f2f2;
+            background-color: #fff;
         }
         
-        .card .image {
+        .card img {
             width: 100%;
             height: 400px;
             background-size: cover;
@@ -55,7 +56,7 @@
         }
         
         .card .button {
-            background-color: #f2f2f2;
+            background-color: #fff;
             color: #333;
             padding: 8px 16px;
             border-radius: 5px;
@@ -65,17 +66,17 @@
 </head>
 <body>
     <a href="live_data.html" class="card">
-        <div class="image" style="background-image: url('bc.jpg');"></div>
+        <img src="{% static 'bc.jpg' %}">
         <h2 class="title">Cryptography</h2>
     </a>
     
     <a href="live_data.html" class="card">
-        <div class="image" style="background-image: url('nfty.jpg');"></div>
+        <img src="{% static 'nfty.jpg' %}">
         <h2 class="title">Nifty</h2>
     </a>
     
     <a href="live_data.html" class="card">
-        <div class="image" style="background-image: url('sm.jpg');"></div>
+        <img src="{% static 'sm.jpg' %}">
         <h2 class="title">Stock Market</h2>
     </a>
 </body>

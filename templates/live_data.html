@@ -120,7 +120,7 @@
         border-color: transparent;
     }
     .top-right-container {
-        position: fixed;
+        position: absolute;
         top: 70px;
         right: 20px;
         display: flex;
@@ -164,6 +164,12 @@
 .price-btn h3 {
     font-size: 16px;
     color: #777;
+}
+@media only screen and (max-width:1200px) {
+    .top-right-container {
+        position: static;
+    }
+    
 }
 </style>
 
