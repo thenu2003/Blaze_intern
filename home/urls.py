@@ -8,9 +8,10 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('signup.html', views.signup, name="signup"),
     path('login.html', views.loginn, name="login"),
-    path('live_data/', views.live_data, name='live_data'),
+    path('options/live_data.html', views.live_data, name='live_data'),
+    path('options/', views.cards, name='cards'),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
-    path('my-url/', my_view, name='my_view')
+    path('my-url/', my_view, name='my_view'),
 ]
 
 

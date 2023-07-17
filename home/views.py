@@ -4,11 +4,15 @@ from django.contrib.auth import authenticate,login
 from django.http import JsonResponse
 import yfinance as yf
 import plotly.graph_objects as go
+from datetime import datetime, timedelta
 
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
+
+def cards(request):
+    return render(request, "cards.html")
 
 def loginn(request):
     if request.method == "POST":
@@ -18,7 +22,7 @@ def loginn(request):
 
         if user is not None:
             login(request,user)
-            return redirect('live_data')
+            return redirect('cards')
         else:
             return redirect("signup")
     return render(request, 'login.html')
@@ -39,13 +43,13 @@ def live_data(request):
         ticker = None
         if selected_option == 'Bitcoin':
             ticker = 'BTC-USD'
-        elif selected_option == 'Etherum':
+        elif selected_option == 'ETH-ethereum':
             ticker = 'ETH-USD'
-        elif selected_option == 'Tether':
+        elif selected_option == 'Tether-USDT':
             ticker = 'USDT-USD'
-        elif selected_option == 'BNB':
+        elif selected_option == 'BNB-BNB':
             ticker = 'BNB-USD'
-        elif selected_option == 'XRP':
+        elif selected_option == 'XRP-XRP':
             ticker = 'XRP-USD'
         elif selected_option == 'DOGE':
             ticker = 'DOGE-USD'
@@ -54,6 +58,7 @@ def live_data(request):
             data = yf.download(tickers=ticker, period='5d', interval='15m')
             latest_price = data.iloc[-1]['Close']
             prices = data[['Open', 'High', 'Low', 'Close']]
+            average = data['Close'].mean()
 
             # Create a candlestick graph using Plotly
             fig = go.Figure(data=[go.Candlestick(x=data.index,
@@ -72,17 +77,31 @@ def live_data(request):
 
             # Convert the graph to HTML and pass it to the template
             graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+            current_datetime = datetime.now()
+            previous_day = current_datetime - timedelta(days=1)
+            start_time = datetime(previous_day.year, previous_day.month, previous_day.day, 23, 59)
+            end_time = start_time + timedelta(minutes=1)
+            data = yf.download(ticker, start=start_time, end=end_time)
+            close_price = data['Close'][0]
+
+            datas = yf.download(tickers=ticker, period="1d", interval="1m")
+            current_price = datas['Close'][-1]
 
             context = {
                 'graph_html': graph_html,
+                'average':average,
+                'close_price':close_price,
+                'Current_price':current_price
             }
+            
+
+        
+
 
             return render(request, 'live_data.html', context)
 
     # For GET requests or when no option is selected
     return render(request, 'live_data.html')
-
-
 
 def my_view(request):
     return render(request, 'my_template.html')
