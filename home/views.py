@@ -89,6 +89,7 @@ def live_data(request):
                     'close_price':close_price,
                     'Current_price':current_price
                 }
+            
         return render(request, 'live_data.html', context)
                 
 

@@ -10,7 +10,7 @@
         <select id="select" name="select">
             <option value="Bitcoin">Bitcoin</option>
             <option value="Etherum">Etherum</option>
-            <option value="Tether">Teather</option>
+            <option value="Tether">Tether</option>
             <option value="BNB">BNB</option>
             <option value="XRP">XRP</option>
             <option value="DOGE">DOGE</option>
@@ -18,10 +18,12 @@
         <input type="submit" value="Submit">
     </form>
 
-    {% if graph_html %}
-        <h2>{{ selected_option }}</h2>
-        {{ graph_html|safe }}
-    {% endif %}
+    <div id="graph-container">
+        {% if graph_html %}
+            <h2>{{ selected_option }}</h2>
+            {{ graph_html|safe }}
+        {% endif %}
+    </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -30,7 +32,7 @@
             $('#live-data-form').on('submit', function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: '/live_data/',
+                    url: '/live_data/', // Replace with the correct backend URL to handle form submission
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
@@ -42,8 +44,9 @@
                 });
             });
             
+            // Auto-refresh graph every 5 seconds
+            
         });
-        // Auto-refresh graph every 5 seconds
         setInterval(function() {
                 $('#live-data-form').submit();
             }, 10000);
