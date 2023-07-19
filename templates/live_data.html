@@ -1,276 +1,31 @@
 <!DOCTYPE html>
-{% load static %}
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!----======== CSS ======== -->
-    <link rel="stylesheet" href="style.css">
-
-    <!--===== Boxicons CSS =====-->
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-
-    <title>Custom Dropdown Select Menu</title>
+    <title>Live Data</title>
 </head>
-<style>
-    /* ===== Google Font Import - Poppins ===== */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-        background: #E3F2FD;
-    }
-
-    .select-menu {
-        width: 300px;
-        margin: 45px;
-    }
-
-    .select-menu .select-btn {
-        display: flex;
-        height: 55px;
-        background: #fff;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: 400;
-        border-radius: 8px;
-        align-items: center;
-        cursor: pointer;
-        justify-content: space-between;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .select-btn i {
-        font-size: 25px;
-        transition: 0.3s;
-    }
-
-    .select-menu.active .select-btn i {
-        transform: rotate(-180deg);
-    }
-
-    .select-menu .options {
-        position: relative;
-        padding: 20px;
-        margin-top: 10px;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-        display: none;
-    }
-
-    .select-menu.active .options {
-        display: block;
-    }
-
-    .options .option {
-        display: flex;
-        height: 55px;
-        cursor: pointer;
-        padding: 0 16px;
-        border-radius: 8px;
-        align-items: center;
-        background: #fff;
-    }
-
-    .options .option:hover {
-        background: #F2F2F2;
-    }
-
-    .option i {
-        font-size: 25px;
-        margin-right: 12px;
-    }
-
-    .option .option-text {
-        font-size: 18px;
-        color: #333;
-    }
-
-    .option img {
-        width: 40px;
-        padding-right: 10px;
-    }
-
-    /* Add new CSS styles for the submit button */
-    .submit-btn {
-        width: 300px; 
-        height: 55px;
-        padding: 20px;
-        color: #333;/* Set the width to match the select button */
-        background-color: #fff; /* Set the background color to match the select button */
-        margin-top: 10px; /* Adjust margin-top if needed */
-        font-size: 18px;
-        font-weight: 400;
-        border-radius: 8px;
-        align-items: center;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-        border-color: transparent;
-    }
-    .top-right-container {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .top-right-container button {
-        margin-bottom: 10px;
-    }
-
-    .price-row {
-    display: flex;
-    flex-direction: row;
-}
-
-.price-btn {
-    width: 250px;
-    height: 100px;
-    padding: 10px;
-    margin-right: 20px;
-    color: #333;
-    background-color: #fff;
-    font-size: 18px;
-    font-weight: 400;
-    border-radius: 8px;
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    border-color: transparent;
-}
-
-.price-btn h2 {
-    margin-right: 5px;
-    font-size: 18px;
-    color: #333;
-}
-
-.price-btn h3 {
-    font-size: 16px;
-    color: #777;
-}
-@media only screen and (max-width:1200px) {
-    .top-right-container {
-        position: static;
-    }
-    
-}
-</style>
-
 <body>
-    <form id="live-data-form" method="POST" action="{% url 'live_data' %}">
+    <form id="live-data-form" method="POST">
         {% csrf_token %}
-        <input type="hidden" name="select" id="selectedOptionInput" value="">
-        <div class="select-menu" id="myDropdown">
-            <div class="select-btn">
-                <span class="sBtn-text">Select your option</span>
-                <i class="bx bx-chevron-down"></i>
-            </div>
-
-            <ul class="options">
-                <li class="option">
-                    <img src="{% static 'bitcoin.jpg' %}">
-                    <span class="option-text">Bitcoin</span>
-                </li>
-                <li class="option">
-                    <img src="{% static 'etherum.jpg' %}">
-                    <span class="option-text">ETH-ethereum</span>
-                </li>
-                <li class="option">
-                    <img src="{% static 'tether.jpg' %}">
-                    <span class="option-text">Tether-USDT</span>
-                </li>
-                <li class="option">
-                    <img src="{% static 'bnb.jpg' %}">
-                    <span class="option-text">BNB-BNB</span>
-                </li>
-                <li class="option">
-                    <img src="{% static 'xrp.jpg' %}">
-                    <span class="option-text">XRP-XRP</span>
-                </li>
-            </ul>
-
-            <!-- Add the "submit-btn" class to the button element -->
-            <button type="button" class="submit-btn" onclick="submitForm()">Submit</button>
-        </div>
+        <label for="select">Choose an option:</label>
+        <select id="select" name="select">
+            <option value="Bitcoin">Bitcoin</option>
+            <option value="Etherum">Etherum</option>
+            <option value="Tether">Teather</option>
+            <option value="BNB">BNB</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+        </select><br>
+        <input type="submit" value="Submit">
     </form>
-<div class="top-right-container">
-    <div class="price-row">
-    {% if Current_price %}
-    <button class="price-btn">
-        Current_price
-        <h2>{{ selected_option }}</h2>
-        {{ Current_price|safe }}
-    </button>
-    {% endif %}
-
-    {% if average %}
-        <button class="price-btn">
-            average
-            <h2>{{ selected_option }}</h2>
-            {{ average|safe }}
-        </button>
-    {% endif %}
-    
-    {% if close_price %}
-    <button class="price-btn">
-        Close_Value
-        <h2>{{ selected_option }}</h2>
-        {{ close_price|safe }}
-    </button>
-    {% endif %}
-    </div>
-</div>
 
     {% if graph_html %}
         <h2>{{ selected_option }}</h2>
-        <div id="graph-container">
-            {{ graph_html|safe }}
-        </div>
+        {{ graph_html|safe }}
     {% endif %}
-
-    <script src="script.js"></script>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  
     <script>
-        const optionMenu = document.querySelector(".select-menu");
-        const selectBtn = optionMenu.querySelector(".select-btn");
-        const options = optionMenu.querySelectorAll(".option");
-        const sBtn_text = optionMenu.querySelector(".sBtn-text");
-        const selectedOptionInput = document.getElementById("selectedOptionInput");
-
-        selectBtn.addEventListener("click", () => optionMenu.classList.toggle("active"));
-
-        options.forEach(option => {
-            option.addEventListener("click", () => {
-                let selectedOption = option.querySelector(".option-text").innerText;
-                sBtn_text.innerText = selectedOption;
-                selectedOptionInput.value = selectedOption; // Set the selected option in the hidden input field
-                optionMenu.classList.remove("active");
-            });
-        });
-        function submitForm() {
-            // Assuming you have a form with the id "live-data-form", you can trigger the form submission like this:
-            document.getElementById("live-data-form").submit();
-        }
-        $(document).ready(function graph() {
+        $(document).ready(function() {
             // Submit form using AJAX
             $('#live-data-form').on('submit', function(event) {
                 event.preventDefault();
@@ -286,9 +41,12 @@
                     }
                 });
             });
-        graph();    
-        setInterval(graph(), 5000);   
+            
         });
+        // Auto-refresh graph every 5 seconds
+        setInterval(function() {
+                $('#live-data-form').submit();
+            }, 10000);
     </script>
 </body>
-</html> 
+</html>

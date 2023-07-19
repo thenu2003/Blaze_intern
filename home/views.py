@@ -39,19 +39,19 @@ def signup(request):
 
 def live_data(request):
     if request.method == "POST":
-        selected_option = request.POST.get('select')
+        selected_option = request.POST.get('select', None)
         ticker = None
         if selected_option == 'Bitcoin':
             ticker = 'BTC-USD'
-        elif selected_option == 'ETH-ethereum':
+        elif selected_option == 'Etherum':  # Updated to 'Etherum'
             ticker = 'ETH-USD'
-        elif selected_option == 'Tether-USDT':
+        elif selected_option == 'Tether':   # Updated to 'Tether'
             ticker = 'USDT-USD'
-        elif selected_option == 'BNB-BNB':
+        elif selected_option == 'BNB':      # Updated to 'BNB'
             ticker = 'BNB-USD'
-        elif selected_option == 'XRP-XRP':
+        elif selected_option == 'XRP':      # Updated to 'XRP'
             ticker = 'XRP-USD'
-        elif selected_option == 'DOGE':
+        elif selected_option == 'DOGE':     # Updated to 'DOGE'
             ticker = 'DOGE-USD'
 
         if ticker:
@@ -62,45 +62,37 @@ def live_data(request):
 
             # Create a candlestick graph using Plotly
             fig = go.Figure(data=[go.Candlestick(x=data.index,
-                                                 open=prices['Open'],
-                                                 high=prices['High'],
-                                                 low=prices['Low'],
-                                                 close=prices['Close'])])
+                                                    open=prices['Open'],
+                                                    high=prices['High'],
+                                                    low=prices['Low'],
+                                                    close=prices['Close'])])
 
             # Customize the graph layout
             fig.update_layout(
-                title=f'{selected_option} Price',
-                xaxis_title='Date',
-                yaxis_title='Price',
-                showlegend=True
-            )
+                    title=f'{selected_option} Price',
+                    xaxis_title='Date',
+                    yaxis_title='Price',
+                    showlegend=True
+                )
 
-            # Convert the graph to HTML and pass it to the template
+                # Convert the graph to HTML and pass it to the template
             graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
-            current_datetime = datetime.now()
-            previous_day = current_datetime - timedelta(days=1)
-            start_time = datetime(previous_day.year, previous_day.month, previous_day.day, 23, 59)
-            end_time = start_time + timedelta(minutes=1)
-            data = yf.download(ticker, start=start_time, end=end_time)
+            data = yf.download(tickers=ticker, period="1d", interval="1m")
             close_price = data['Close'][0]
 
             datas = yf.download(tickers=ticker, period="1d", interval="1m")
             current_price = datas['Close'][-1]
 
             context = {
-                'graph_html': graph_html,
-                'average':average,
-                'close_price':close_price,
-                'Current_price':current_price
-            }
-            
+                    'graph_html': graph_html,
+                    'average':average,
+                    'close_price':close_price,
+                    'Current_price':current_price
+                }
+        return render(request, 'live_data.html', context)
+                
 
-        
-
-
-            return render(request, 'live_data.html', context)
-
-    # For GET requests or when no option is selected
+        # For GET requests or when no option is selected
     return render(request, 'live_data.html')
 
 def my_view(request):
