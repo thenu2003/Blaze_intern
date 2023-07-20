@@ -14,6 +14,10 @@ urlpatterns = [
     path('options/', views.cards, name='cards'),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
     path('my-url/', my_view, name='my_view'),
+    path('live_data1.html', views.live_data1, name='live_data1'),
+    path('options/live_data1.html', views.live_data1, name='live_data1'),
+    path('live_data1/', views.live_data1, name='live_data1'),
+    path('live_data2.html', views.live_data2, name='live_data2'),
+    path('options/live_data2.html', views.live_data2, name='live_data2'),
+    path('live_data2/', views.live_data2, name='live_data2'),
 ]
-
-

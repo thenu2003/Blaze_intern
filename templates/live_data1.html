@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cryptocurrency</title>
+    <title>Live Nifty Chart</title>
 </head>
 <body>
-    <form id="live-data7-form" method="POST">
+    <form id="live-data1-form" method="POST">
         {% csrf_token %}
         <label for="select">Choose an option:</label>
         <select id="Select" name="select">
-            <option value="Bitcoin">Bitcoin</option>
-            <option value="Etherum">Etherum</option>
-            <option value="Tether">Tether</option>
-            <option value="BNB">BNB</option>
-            <option value="XRP">XRP</option>
-            <option value="DOGE">DOGE</option>
+                <option value="NIFTY 50">NIFTY 50</option>
+                <option value="NIFTY Bank">NIFTY Bank</option>
         </select><br>
         <input type="submit" value="Submit">
     </form>
+
     {% if Current_price %}
     <button>
         Current_price
@@ -47,6 +44,7 @@
             {{ graph_html|safe }}
         {% endif %}
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -66,7 +64,7 @@
                 });
             });
             setInterval(function() {
-                $('#live-data7-form').submit();
+                $('#live-data1-form').submit();
             }, 10000);
         });
     </script>
