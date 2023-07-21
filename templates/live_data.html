@@ -1,24 +1,151 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <title>Cryptocurrency</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 </head>
+<style>
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #E3F2FD;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        #form-container {
+            display: flex;
+            flex-direction: row; /* Display form elements in a row */
+            align-items: center; /* Center items vertically */
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column; /* Display form elements in a row */
+            align-items: center; /* Center items vertically */
+        }
+        select {
+            width: 150px;
+            border-color: transparent;
+            font-size: 18px;
+            border-radius: 8px;
+            padding: 8px;
+            outline: none; /* Remove the default outline when the select box is focused */
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);/* Adjust the width and styles as needed */
+            margin-right: 10px; /* Add spacing between select and submit button */
+        }
+        select option {
+            background-color: #fff;
+            color: #333;
+            font-size: 18px;
+            padding: 8px;
+        }
+        .custom-button {
+            width: 150px;
+            height: 30px;
+            font-size: 14px;
+            background-color: #fff; 
+            border-radius: 5px;
+            border-color: transparent;
+            margin-top: 10px;
+        }
+
+
+    #graph-container {
+        position: fixed;
+        margin-top: 170px;
+        width: 100%;
+    }
+
+    /* Additional style for the graph */
+     .top-right-container {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-right-container button {
+        margin-bottom: 10px;
+    }
+
+    .price-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.price-btn {
+    width: 250px;
+    height: 100px;
+    padding: 10px;
+    margin-right: 20px;
+    color: #333;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+
+.price-btn h2 {
+    margin-right: 5px;
+    font-size: 18px;
+    color: #333;
+}
+
+.price-btn h3 {
+    font-size: 16px;
+    color: #777;
+}
+@media only screen and (max-width:1120px) {
+    .top-right-container {
+        position: static;
+    }
+    
+}
+
+/* Add more styles for other options with data-icon as needed */
+
+</style>
 <body>
-    <form id="live-data7-form" method="POST">
+    <div id="top-right-content">
+        <div id="form-container">
+            <form id="live-data7-form" method="POST">
         {% csrf_token %}
         <label for="select">Choose an option:</label>
+        <div class="custom-select">
         <select id="Select" name="select">
-            <option value="Bitcoin">Bitcoin</option>
-            <option value="Etherum">Etherum</option>
-            <option value="Tether">Tether</option>
-            <option value="BNB">BNB</option>
-            <option value="XRP">XRP</option>
-            <option value="DOGE">DOGE</option>
+            <option value="Bitcoin" data-icon="{% static 'bitcoin.png' %}">Bitcoin</option>
+            <option value="Etherum" data-icon="{% static 'etherum.png' %}">Etherum</option>
+            <option value="Tether" data-icon="{% static 'tether.png' %}">Tether</option>
+            <option value="BNB" data-icon="{% static 'bnb.png' %}">BNB</option>
+            <option value="XRP" data-icon="{% static 'xrp.png' %}">XRP</option>
+            <option value="DOGE" data-icon="{% static 'doge.png' %}">DOGE</option>
         </select><br>
-        <input type="submit" value="Submit">
-    </form>
+        </div>
+        <input type="submit" value="Submit" class="custom-button">
+            </form>
+        </div>
+    </div>
+    <div class="top-right-container">
+        <div class="price-row">
     {% if Current_price %}
-    <button>
+    <button class="price-btn">
         Current_price
         <h2>{{ selected_option }}</h2>
         {{ Current_price|safe }}
@@ -26,7 +153,7 @@
     {% endif %}
 
     {% if average %}
-        <button>
+        <button class="price-btn">
             average
             <h2>{{ selected_option }}</h2>
             {{ average|safe }}
@@ -34,12 +161,14 @@
     {% endif %}
     
     {% if close_price %}
-    <button>
+    <button class="price-btn">
         Close_Value
         <h2>{{ selected_option }}</h2>
         {{ close_price|safe }}
     </button>
     {% endif %}
+        </div>
+    </div>
 
     <div id="graph-container">
         {% if graph_html %}
@@ -47,7 +176,22 @@
             {{ graph_html|safe }}
         {% endif %}
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+      $('#Select').select2({
+        templateResult: function(data) {
+          var $option = $('<span></span>').text(data.text);
+          if (data.element && data.element.dataset && data.element.dataset.icon) {
+            $option.prepend('<img src="' + data.element.dataset.icon + '" alt="Icon" width="20" height="20"> ');
+          }
+          return $option;
+        }
+      });
+    });
+    </script>
     <script>
         $(document).ready(function() {
             // Submit form using AJAX
@@ -58,7 +202,9 @@
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
+                        var graphHtml = $(response).find('#graph').html();
                         $('#graph-container').html(response);
+
                     },
                     error: function(xhr, errmsg, err) {
                         console.log(xhr.status + ": " + xhr.responseText);

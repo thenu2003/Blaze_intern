@@ -3,19 +3,133 @@
 <head>
     <title>Stock Markets</title>
 </head>
+<style>
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #E3F2FD;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        #form-container {
+            display: flex;
+            flex-direction: row; /* Display form elements in a row */
+            align-items: center; /* Center items vertically */
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: row; /* Display form elements in a row */
+            align-items: center; /* Center items vertically */
+        }
+        select {
+            width: 150px;
+            border-color: transparent;
+            font-size: 14px;
+            border-radius: 5px;
+            padding: 8px;
+            outline: none; /* Remove the default outline when the select box is focused */
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);/* Adjust the width and styles as needed */
+            margin-right: 30px;
+            margin-top: 30px; /* Add spacing between select and submit button */
+        }
+        select option {
+            background-color: #fff;
+            color: #333;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .custom-button {
+            width: 150px;
+            height: 30px;
+            font-size: 14px;
+            background-color: #fff; 
+            border-radius: 5px;
+            border-color: transparent;
+            margin-top: 30px;
+        }
+
+
+    #graph-container {
+        position: fixed;
+        margin-top: 170px;
+        width: 100%;
+    }
+    .top-right-container {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-right-container button {
+        margin-bottom: 10px;
+    }
+
+    .price-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.price-btn {
+    width: 250px;
+    height: 100px;
+    padding: 10px;
+    margin-right: 20px;
+    color: #333;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+
+.price-btn h2 {
+    margin-right: 5px;
+    font-size: 18px;
+    color: #333;
+}
+
+.price-btn h3 {
+    font-size: 16px;
+    color: #777;
+}
+@media only screen and (max-width:1120px) {
+    .top-right-container {
+        position: static;
+    }
+    
+}
+</style>
 <body>
     <form id="live-data2-form" method="POST">
         {% csrf_token %}
-        <label for="select">Choose an option:</label>
         <select id="Select" name="select">
                 <option value="Google">GOOGLE</option>
                 <option value="Apple">APPLE</option>
         </select><br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" class="custom-button">
     </form>
 
+    <div class="top-right-container">
+        <div class="price-row">
     {% if Current_price %}
-    <button>
+    <button class="price-btn">
         Current_price
         <h2>{{ selected_option }}</h2>
         {{ Current_price|safe }}
@@ -23,7 +137,7 @@
     {% endif %}
 
     {% if average %}
-        <button>
+        <button class="price-btn">
             average
             <h2>{{ selected_option }}</h2>
             {{ average|safe }}
@@ -31,12 +145,14 @@
     {% endif %}
     
     {% if close_price %}
-    <button>
+    <button class="price-btn">
         Close_Value
         <h2>{{ selected_option }}</h2>
         {{ close_price|safe }}
     </button>
     {% endif %}
+        </div>
+    </div>
 
     <div id="graph-container">
         {% if graph_html %}
