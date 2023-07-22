@@ -61,7 +61,7 @@
 
     #graph-container {
         position: fixed;
-        margin-top: 200px;
+        margin-top: 170px;
         width: 100%;
     }
 
@@ -130,12 +130,12 @@
         <label for="select">Choose an option:</label>
         <div class="custom-select">
         <select id="Select" name="select">
-            <option value="Bitcoin" data-icon="{% static 'static/bitcoin.png' %}">Bitcoin</option>
-            <option value="Etherum" data-icon="{% static 'etherum.png' %}">Etherum</option>
-            <option value="Tether" data-icon="{% static 'tether.png' %}">Tether</option>
-            <option value="BNB" data-icon="{% static 'bnb.png' %}">BNB</option>
-            <option value="XRP" data-icon="{% static 'xrp.png' %}">XRP</option>
-            <option value="DOGE" data-icon="{% static 'doge.png' %}">DOGE</option>
+            <option value="Bitcoin" data-icon="{% static 'bitcoin.png' %}"{% if selected_option == 'Bitcoin' %} selected{% endif %}>Bitcoin</option>
+            <option value="Etherum" data-icon="{% static 'etherum.png' %}" {% if selected_option == 'Etherum' %} selected{% endif %}>Etherum</option>
+            <option value="Tether" data-icon="{% static 'tether.png' %}" {% if selected_option == 'Tether' %} selected{% endif %}>Tether</option>
+            <option value="BNB" data-icon="{% static 'bnb.png' %}"{% if selected_option == 'BNB' %} selected{% endif %}>BNB</option>
+            <option value="XRP" data-icon="{% static 'xrp.png' %}"{% if selected_option == 'XRP' %} selected{% endif %}>XRP</option>
+            <option value="DOGE" data-icon="{% static 'doge.png' %}"{% if selected_option == 'DOGE' %} selected{% endif %}>DOGE</option>
         </select><br>
         </div>
         <input type="submit" value="Submit" class="custom-button">
@@ -146,24 +146,24 @@
         <div class="price-row">
     {% if Current_price %}
     <button class="price-btn">
-        Current_price
-        <h2>{{ selected_option }}</h2>
+        Current Price
+        
         {{ Current_price|safe }}
     </button>
     {% endif %}
 
     {% if average %}
         <button class="price-btn">
-            average
-            <h2>{{ selected_option }}</h2>
+            Average
+            
             {{ average|safe }}
         </button>
     {% endif %}
     
     {% if close_price %}
     <button class="price-btn">
-        Close_Value
-        <h2>{{ selected_option }}</h2>
+        Close Value
+        
         {{ close_price|safe }}
     </button>
     {% endif %}
@@ -181,51 +181,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Restore the selected cryptocurrency from localStorage, if available
-            var selectedCryptocurrency = localStorage.getItem('selectedCryptocurrency');
-            if (selectedCryptocurrency) {
-                $('#Select').val(selectedCryptocurrency);
-            }
-    
-            // Function to submit form using AJAX
-            function submitForm() {
+      $('#Select').select2({
+        templateResult: function(data) {
+          var $option = $('<span></span>').text(data.text);
+          if (data.element && data.element.dataset && data.element.dataset.icon) {
+            $option.prepend('<img src="' + data.element.dataset.icon + '" alt="Icon" width="20" height="20"> ');
+          }
+          return $option;
+        }
+      });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Submit form using AJAX
+            $('#live-data-form').on('submit', function(event) {
+                event.preventDefault();
                 $.ajax({
                     url: '',
                     type: 'POST',
-                    data: $('#live-data7-form').serialize(),
+                    data: $(this).serialize(),
                     success: function(response) {
                         var graphHtml = $(response).find('#graph').html();
-                        $('#graph-container').html(graphHtml);
-    
-                        // Optional: Update the price buttons
-                        var selectedOption = $('#Select').val();
-                        $('.price-btn h2').text(selectedOption);
-    
-                        // Store the selected cryptocurrency in localStorage
-                        localStorage.setItem('selectedCryptocurrency', selectedOption);
+                        $('#graph-container').html(response);
+
                     },
                     error: function(xhr, errmsg, err) {
                         console.log(xhr.status + ": " + xhr.responseText);
                     }
                 });
-            }
-    
-            // Set an interval to reload the graph every 10 seconds (10,000 milliseconds)
-            var intervalId = setInterval(submitForm, 10000);
-    
-            // Submit the form when the page loads and whenever the select box changes
-            $('#Select').on('change', function() {
-                clearInterval(intervalId);
-                submitForm();
-    
-                // After changing the interval, set a new one with the updated selected cryptocurrency
-                intervalId = setInterval(submitForm, 10000);
             });
-    
-            // Initial graph load
-            submitForm();
+            setInterval(function() {
+                $('#live-data7-form').submit();
+            }, 10000);
         });
     </script>
-    
 </body>
 </html>

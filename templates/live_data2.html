@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
-    <title>Stock Markets</title>
+    <title>StockMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 </head>
 <style>
     * {
@@ -25,27 +27,26 @@
         }
         form {
             display: flex;
-            flex-direction: row; /* Display form elements in a row */
+            flex-direction: column; /* Display form elements in a row */
             align-items: center; /* Center items vertically */
         }
         select {
             width: 150px;
             border-color: transparent;
-            font-size: 14px;
-            border-radius: 5px;
+            font-size: 18px;
+            border-radius: 8px;
             padding: 8px;
             outline: none; /* Remove the default outline when the select box is focused */
             text-align: center;
             cursor: pointer;
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);/* Adjust the width and styles as needed */
-            margin-right: 30px;
-            margin-top: 30px; /* Add spacing between select and submit button */
+            margin-right: 10px; /* Add spacing between select and submit button */
         }
         select option {
             background-color: #fff;
             color: #333;
-            font-size: 14px;
-            border-radius: 5px;
+            font-size: 18px;
+            padding: 8px;
         }
         .custom-button {
             width: 150px;
@@ -54,7 +55,7 @@
             background-color: #fff; 
             border-radius: 5px;
             border-color: transparent;
-            margin-top: 30px;
+            margin-top: 10px;
         }
 
 
@@ -63,7 +64,9 @@
         margin-top: 170px;
         width: 100%;
     }
-    .top-right-container {
+
+    /* Additional style for the graph */
+     .top-right-container {
         position: absolute;
         top: 70px;
         right: 20px;
@@ -115,39 +118,46 @@
     }
     
 }
+/* Add more styles for other options with data-icon as needed */
 </style>
 <body>
-    <form id="live-data2-form" method="POST">
+    <div id="top-right-content">
+        <div id="form-container">
+            <form id="live-data2-form" method="POST">
         {% csrf_token %}
+        <label for="select">Choose an option:</label>
+        <div class="custom-select">
         <select id="Select" name="select">
-                <option value="Google">GOOGLE</option>
-                <option value="Apple">APPLE</option>
+            <option value="Google" data-icon="{% static 'google.png' %}"{% if selected_option == 'Google' %} selected{% endif %}>Google</option>
+            <option value="Apple" data-icon="{% static 'apple.png' %}" {% if selected_option == 'Apple' %} selected{% endif %}>Apple</option>
         </select><br>
+        </div>
         <input type="submit" value="Submit" class="custom-button">
-    </form>
-
+            </form>
+        </div>
+    </div>
     <div class="top-right-container">
         <div class="price-row">
     {% if Current_price %}
     <button class="price-btn">
-        Current_price
-        <h2>{{ selected_option }}</h2>
+        Current Price
+        
         {{ Current_price|safe }}
     </button>
     {% endif %}
 
     {% if average %}
         <button class="price-btn">
-            average
-            <h2>{{ selected_option }}</h2>
+            Average
+            
             {{ average|safe }}
         </button>
     {% endif %}
     
     {% if close_price %}
     <button class="price-btn">
-        Close_Value
-        <h2>{{ selected_option }}</h2>
+        Close Value
+        
         {{ close_price|safe }}
     </button>
     {% endif %}
@@ -160,8 +170,22 @@
             {{ graph_html|safe }}
         {% endif %}
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+      $('#Select').select2({
+        templateResult: function(data) {
+          var $option = $('<span></span>').text(data.text);
+          if (data.element && data.element.dataset && data.element.dataset.icon) {
+            $option.prepend('<img src="' + data.element.dataset.icon + '" alt="Icon" width="20" height="20"> ');
+          }
+          return $option;
+        }
+      });
+    });
+    </script>
     <script>
         $(document).ready(function() {
             // Submit form using AJAX
@@ -172,7 +196,9 @@
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
+                        var graphHtml = $(response).find('#graph').html();
                         $('#graph-container').html(response);
+
                     },
                     error: function(xhr, errmsg, err) {
                         console.log(xhr.status + ": " + xhr.responseText);
