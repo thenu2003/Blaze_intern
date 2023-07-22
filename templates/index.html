@@ -1,144 +1,225 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
 <head>
-  <title>Welcome Page</title>
+  <title>Welcome to Blaze Webservice Technology</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-</head>
   <style>
     body {
       margin: 0;
       padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff77; /* Set body color to white */
+      overflow: hidden; /* Prevent vertical scrolling */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Set the body height to the full viewport height */
     }
-    
+
+    header {
+      background: linear-gradient(to right, rgb(251, 250, 250), rgb(255, 255, 255));
+      padding: 15px;
+      text-align: center;
+      height: 1.5cm;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      padding-left: 700px; /* Add padding from the left side */
+      border-bottom: 1px solid #dddddd; /* Add a gray border at the bottom of the header */
+      box-shadow: 0 0 10px rgba(232, 232, 232, 0.5), 0 0 20px rgba(232, 232, 232, 0.3), 0 0 40px rgba(232, 232, 232, 0.2), 0 0 80px rgba(232, 232, 232, 0.1); /* Add multiple shadow layers for increased glow */
+    }
+
+    .logo {
+      max-height: 70px; /* Set the maximum height for the logo */
+      max-width: 100%; /* Set the maximum width for the logo */
+      margin-right: 50px; /* Add margin to create space between logo and text */
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     .slideshow-container {
       position: relative;
       max-width: 100%;
-      height: 100vh;
+      height: 80vh;
+      overflow: hidden;
     }
-    
+
     .slideshow-container img {
       width: 100%;
-      height: 100vh;
+      height: 100%;
       object-fit: cover;
       display: none;
+      filter: brightness(70%);
+      transition: opacity 0.8s ease;
     }
-    
+
     .text {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-family: 'Poppins', sans-serif;
-      font-size: 50px;
+      font-size: 36px;
       text-align: center;
       font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      white-space: nowrap;
+      animation: scrollingText 10s linear infinite;
+      
     }
-    
-    .button-container {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
+
+    .feature-container {
+      position: relative; /* Add position property to the container for z-index to work */
+      padding: 100px;
+      margin-top: 50px; /* Add margin to move the features down */
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
     }
-    
+
+    .feature {
+      position: relative; /* Add position property for z-index */
+      max-width: 300px;
+      background-color: #fff;
+      margin: 15px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.1), 0 0 80px rgba(0, 0, 0, 0.1); /* Add glowing effect with increased density */
+      text-align: center;
+      transition: box-shadow 0.3s ease; /* Add smooth transition for box-shadow on hover */
+      opacity: 0; /* Hide features initially */
+      z-index: 0; /* Set initial z-index */
+    }
+
+    .feature:first-child {
+      animation: fadeInUp 3s ease forwards; /* Animation for the first feature */
+    }
+
+    .feature:nth-child(2) {
+      animation: fadeInUp 3s ease 0.5s forwards; /* Animation for the second feature with a 0.5s delay */
+    }
+
+    .feature:last-child {
+      animation: fadeInUp 3s ease 1s forwards; /* Animation for the third feature with a 1s delay */
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 5;
+        transform: translateY(10);
+      }
+    }
+
+    .feature:hover {
+      transform: translateY(-5px); /* Slightly move the feature up on hover */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.1), 0 0 60px rgba(0, 0, 0, 0.1), 0 0 120px rgba(0, 0, 0, 0.1); /* Add glowing effect on hover */
+      z-index: 1; /* Bring the feature to the front on hover */
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px; /* Slightly reduced margin for button container */
+    }
+
     .button {
       margin: 0 10px;
-      padding: 10px 20px;
-      background-color: transparent;
-      border: 2px solid white;
+      padding: 10px 30px; /* Reduced padding for smaller buttons */
+      background-color: #0e7815;
+      border: none;
       color: white;
-      font-family: 'Poppins';
-      font-size: 20px;
+      font-size: 20px; /* Slightly smaller font size */
       text-decoration: none;
-      border-radius: 7px;
-      transition: background-color 0.3s ease;
-    }
-    
-    .button:hover {
-      background-color: white;
-      color: black;
-    }
-    
-    .dot-container {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      justify-content: center;
-    }
-    
-    .dot {
-      height: 10px;
-      width: 10px;
-      background-color: white;
-      border-radius: 50%;
-      margin: 0 5px;
+      border-radius: 50px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    
-    .dot.active {
-      background-color: black;
+
+    .button:hover {
+      background-color: #02481d;
+    }
+
+    footer {
+      background: linear-gradient(to right, rgb(251, 250, 250), rgb(255, 255, 255));
+      padding: 10px;
+      text-align: center;
+      color: rgb(0, 0, 0);
+      position: fixed; /* Set position to fixed */
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    footer p {
+      margin: 0;
     }
   </style>
+</head>
 
 <body>
-  <div class="slideshow-container">
-    <img src="{% static 'g1.jpg' %}" alt="Slideshow Image 1">
-    <img src="{% static 'g2.jpg' %}" alt="Slideshow Image 2">
-    <img src="{% static 'g3.jpg' %}" alt="Slideshow Image 3">
-    <img src="{% static 'g4.jpg' %}" alt="Slideshow Image 4">
-    <div class="text">Welcome to Our Website!</div>
-    <div class="button-container">
-      <a href="login.html" class="button">Login</a>
-      <a href="signup.html" class="button">Sign Up</a>
+  <header>
+    <!-- Replace 'path_to_your_logo_image' with the path to your actual logo or image -->
+    <img class="logo" src="static/Blaze.png" alt="Blaze Webservice Technology">
+    <h1>Blaze Webservice Technology</h1>
+  </header>
+
+  <div class="feature-container">
+    <div class="feature">
+      <h2 style="color: green;">Stock Market</h2>
+      <p>Stay updated with real-time stock prices, market trends, and personalized investment insights.</p>
     </div>
-    <div class="dot-container">
-      <span class="dot" onclick="currentSlide(1)"></span>
-      <span class="dot" onclick="currentSlide(2)"></span>
-      <span class="dot" onclick="currentSlide(3)"></span>
-      <span class="dot" onclick="currentSlide(4)"></span>
+    <div class="feature">
+      <h2 style="color: green;">Cryptocurrency</h2>
+      <p>Explore the world of cryptocurrencies, track prices, and make informed investment decisions.</p>
+    </div>
+    <div class="feature">
+      <h2 style="color: green;">Nifty</h2>
+      <p>Get the latest Nifty index information, historical data, and analysis for markets.</p>
     </div>
   </div>
 
+  <div class="button-container">
+    <a href="login.html" class="button">Login</a>
+    <a href="signup.html" class="button">Sign Up</a>
+  </div>
+
+  <div class="slideshow-container">
+    <!-- Replace these image URLs with the paths to your actual images -->
+    <img src="path_to_your_image_folder/stock_market.jpg" alt="Stock Market">
+    <img src="path_to_your_image_folder/cryptocurrency.jpg" alt="Cryptocurrency">
+    <img src="path_to_your_image_folder/nifty.jpg" alt="Nifty">
+  </div>
+
+  <footer>
+    <p>&copy; All rights are reserved © 2004 - 2023 BLAZE WEB SERVICES PRIVATE LIMITED.</p>
+  </footer>
+
   <script>
-    // Slideshow logic
     var slideIndex = 1; // Start from the first slide
     var slideshowTimeout;
 
     showSlides(slideIndex);
 
     function showSlides(n) {
-      var slides = document.getElementsByTagName("img");
-      var dots = document.getElementsByClassName("dot");
       var text = document.getElementsByClassName("text")[0];
 
-      if (n > slides.length) {
-        slideIndex = 1;
-      } else if (n < 1) {
-        slideIndex = slides.length;
-      }
-
-      for (var i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-
-      for (var i = 0; i < dots.length; i++) {
-        dots[i].classList.remove("active");
-      }
-
-      slides[slideIndex - 1].style.display = "block";
-      dots[slideIndex - 1].classList.add("active");
+      text.style.opacity = 1;
 
       slideIndex++;
-      if (slideIndex > slides.length) {
+      if (slideIndex > 3) {
         slideIndex = 1;
       }
 
@@ -153,7 +234,7 @@
       showSlides(slideIndex = n);
       setTimeout(function() {
         showSlides(slideIndex);
-      }, 5000); // Display next image after 5 seconds
+      }, 5000); // Display next text after 5 seconds
     }
   </script>
 </body>
