@@ -5,14 +5,33 @@ from django.http import JsonResponse
 import yfinance as yf
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-
+import pandas as pd
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
 def cards(request):
-    return render(request, "cards.html")
+    cryptocurrencies = ['BTC-USD', 'ETH-USD', 'USDT-USD', 'BNB-USD', 'XRP-USD']
+    dfs = []
+    for crypto in cryptocurrencies:
+        data = yf.download(crypto, start='2021-07-20', end='2021-08-17')
+        data['symbol'] = crypto
+        dfs.append(data)
+    merged_df = pd.concat(dfs, axis=0)
+    merged_df['MarketCap'] = merged_df['Close'] * merged_df['Volume']
+    average_market_cap = merged_df.groupby('symbol')['MarketCap'].mean()
+    total_market_cap = average_market_cap.sum()
+    reference_value = 1e12
+    if total_market_cap >= reference_value:
+        market_status = "high"
+    else:
+        market_status = "low"
+    analyse = f"The market is considered {market_status}."
+    context = {
+        'Analyse': analyse,
+    }
+    return render(request, "cards.html", context)
 
 def loginn(request):
     if request.method == "POST":
