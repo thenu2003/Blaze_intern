@@ -61,7 +61,7 @@
 
     #graph-container {
         position: fixed;
-        margin-top: 170px;
+        margin-top: 210px;
         width: 100%;
     }
 
@@ -76,7 +76,7 @@
 
     .top-right-container button {
         margin-bottom: 10px;
-    }
+    }   
 
     .price-row {
     display: flex;
@@ -96,6 +96,7 @@
     align-items: center;
     cursor: pointer;
     display: flex;
+    text-align: center;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
@@ -106,6 +107,7 @@
     margin-right: 5px;
     font-size: 18px;
     color: #333;
+    align-content: space-between;
 }
 
 .price-btn h3 {
@@ -118,6 +120,7 @@
     }
     
 }
+
 
 /* Add more styles for other options with data-icon as needed */
 
@@ -144,31 +147,29 @@
     </div>
     <div class="top-right-container">
         <div class="price-row">
-    {% if Current_price %}
-    <button class="price-btn">
-        Current Price
-        
-        {{ Current_price|safe }}
-    </button>
-    {% endif %}
-
-    {% if average %}
-        <button class="price-btn">
-            Average
-            
-            {{ average|safe }}
-        </button>
-    {% endif %}
+        {% if Current_price %}
+            <button class="price-btn">
+                Current Price
+                <h2>{{ Current_price|safe }}</h2>
+            </button>
+        {% endif %}
     
-    {% if close_price %}
-    <button class="price-btn">
-        Close Value
-        
-        {{ close_price|safe }}
-    </button>
-    {% endif %}
+        {% if average %}
+            <button class="price-btn">
+                Average
+                <h2>{{ average|safe }}</h2>
+            </button>
+        {% endif %}
+    
+        {% if close_price %}
+            <button class="price-btn">
+                Close Value
+                <h2>{{ close_price|safe }}</h2>
+            </button>
+        {% endif %}
         </div>
     </div>
+    
 
     <div id="graph-container">
         {% if graph_html %}

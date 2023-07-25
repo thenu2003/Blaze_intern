@@ -61,7 +61,7 @@
 
     #graph-container {
         position: fixed;
-        margin-top: 170px;
+        margin-top: 210px;
         width: 100%;
     }
 
@@ -138,29 +138,26 @@
     </div>
     <div class="top-right-container">
         <div class="price-row">
-    {% if Current_price %}
-    <button class="price-btn">
-        Current Price
-        
-        {{ Current_price|safe }}
-    </button>
-    {% endif %}
-
-    {% if average %}
-        <button class="price-btn">
-            Average
-            
-            {{ average|safe }}
-        </button>
-    {% endif %}
+        {% if Current_price %}
+            <button class="price-btn">
+                Current Price
+                <h2>{{ Current_price|safe }}</h2>
+            </button>
+        {% endif %}
     
-    {% if close_price %}
-    <button class="price-btn">
-        Close Value
-        
-        {{ close_price|safe }}
-    </button>
-    {% endif %}
+        {% if average %}
+            <button class="price-btn">
+                Average
+                <h2>{{ average|safe }}</h2>
+            </button>
+        {% endif %}
+    
+        {% if close_price %}
+            <button class="price-btn">
+                Close Value
+                <h2>{{ close_price|safe }}</h2>
+            </button>
+        {% endif %}
         </div>
     </div>
 
@@ -198,7 +195,6 @@
                     success: function(response) {
                         var graphHtml = $(response).find('#graph').html();
                         $('#graph-container').html(response);
-
                     },
                     error: function(xhr, errmsg, err) {
                         console.log(xhr.status + ": " + xhr.responseText);
