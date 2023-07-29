@@ -12,26 +12,7 @@ def index(request):
     return render(request, 'index.html')
 
 def cards(request):
-    cryptocurrencies = ['BTC-USD', 'ETH-USD', 'USDT-USD', 'BNB-USD', 'XRP-USD']
-    dfs = []
-    for crypto in cryptocurrencies:
-        data = yf.download(crypto, start='2021-07-20', end='2021-08-17')
-        data['symbol'] = crypto
-        dfs.append(data)
-    merged_df = pd.concat(dfs, axis=0)
-    merged_df['MarketCap'] = merged_df['Close'] * merged_df['Volume']
-    average_market_cap = merged_df.groupby('symbol')['MarketCap'].mean()
-    total_market_cap = average_market_cap.sum()
-    reference_value = 1e12
-    if total_market_cap >= reference_value:
-        market_status = "high"
-    else:
-        market_status = "low"
-    analyse = f"The market is considered {market_status}."
-    context = {
-        'Analyse': analyse,
-    }
-    return render(request, "cards.html", context)
+    return render(request, "cards.html")
 
 def loginn(request):
     if request.method == "POST":
@@ -109,12 +90,30 @@ def live_data(request):
             current_price = datas['Close'][-1]
             current = round(current_price, 2)
 
+            cryptocurrencies = ['BTC-USD', 'ETH-USD', 'USDT-USD', 'BNB-USD', 'XRP-USD']
+            dfs = []
+            for crypto in cryptocurrencies:
+                data = yf.download(crypto, start='2021-07-20', end='2021-08-17')
+                data['symbol'] = crypto
+                dfs.append(data)
+            merged_df = pd.concat(dfs, axis=0)
+            merged_df['MarketCap'] = merged_df['Close'] * merged_df['Volume']
+            average_market_cap = merged_df.groupby('symbol')['MarketCap'].mean()
+            total_market_cap = average_market_cap.sum()
+            reference_value = 1e12
+            if total_market_cap >= reference_value:
+                market_status = "high"
+            else:
+                market_status = "low"
+            analyse = f"The market is considered {market_status}."
+
             context = {
                 'selected_option': default_option,
                 'graph_html': graph_html,
                 'average': average_price,
                 'close_price': close,
-                'Current_price': current
+                'Current_price': current,
+                'Analyse': analyse,
             }
 
             return render(request, 'live_data.html', context)
@@ -240,10 +239,28 @@ def live_data2(request):
     if request.method == "POST":
         selected_option = request.POST.get('select', None)
         ticker = None
-        if selected_option == 'Google':    # Added Nifty ticker
-            ticker = 'GOOG'  # Nifty 50 index
-        elif selected_option == 'Apple':
-            ticker = 'AAPL'
+        if selected_option == 'DOW JONES':
+            ticker = '^DJI'
+        elif selected_option == 'S&P':
+            ticker = '^GSPC'
+        elif selected_option == 'NASDAQ':
+            ticker = '^IXIC'
+        elif selected_option == 'FTSE':
+            ticker = '^FTSE'
+        elif selected_option == 'CAC':
+            ticker = 'CAC'
+        elif selected_option == 'DAX':
+            ticker = 'DAX'
+        elif selected_option == 'Nikkel':
+            ticker = '^N225'
+        elif selected_option == 'Straits Times':
+            ticker = '^STI'
+        elif selected_option == 'Hang seng':
+            ticker = '^HSI'
+        elif selected_option == 'Jakarta':
+            ticker = ' ^JKSE'
+        elif selected_option == 'KOSPI':
+            ticker = '^KS11'
         default_option = selected_option
         if ticker:
             data = yf.download(tickers=ticker, period='5d', interval='15m')

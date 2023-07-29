@@ -128,8 +128,17 @@
         <label for="select">Choose an option:</label>
         <div class="custom-select">
         <select id="Select" name="select">
-            <option value="Google" data-icon="{% static 'google.png' %}"{% if selected_option == 'Google' %} selected{% endif %}>Google</option>
-            <option value="Apple" data-icon="{% static 'apple.png' %}" {% if selected_option == 'Apple' %} selected{% endif %}>Apple</option>
+            <option value="DOW JONES" data-icon="{% static 'dow.png' %}"{% if selected_option == 'DOW JONES' %} selected{% endif %}>DOW JONES</option>
+            <option value="S&P" data-icon="{% static 's&p.png' %}" {% if selected_option == 'S&P' %} selected{% endif %}>S&P</option>
+            <option value="NASDAQ" data-icon="{% static 'apple.png' %}" {% if selected_option == 'NASDAQ' %} selected{% endif %}>NASDAQ</option>
+            <option value="FTSE" data-icon="{% static 'ftse.png' %}" {% if selected_option == 'FTSE' %} selected{% endif %}>FTSE</option>
+            <option value="CAC" data-icon="{% static 'apple.png' %}" {% if selected_option == 'CAC' %} selected{% endif %}>CAC</option>
+            <option value="DAX" data-icon="{% static 'apple.png' %}" {% if selected_option == 'DAX' %} selected{% endif %}>DAX</option>
+            <option value="Nikkel" data-icon="{% static 'nikkei.png' %}" {% if selected_option == 'Nikkel' %} selected{% endif %}>Nikkel</option>
+            <option value="Straits Times" data-icon="{% static 'st.png' %}" {% if selected_option == 'Straits Times' %} selected{% endif %}>Straits Times</option>
+            <option value="Hang seng" data-icon="{% static 'apple.png' %}" {% if selected_option == 'Hang seng' %} selected{% endif %}>Hang seng</option>
+            <option value="Jakarta" data-icon="{% static 'jakarta.png' %}" {% if selected_option == 'Jakarta' %} selected{% endif %}>Jakarta</option>
+            <option value="KOSPI" data-icon="{% static 'apple.png' %}" {% if selected_option == 'KOSPI' %} selected{% endif %}>KOSPI</option>
         </select><br>
         </div>
         <input type="submit" value="Submit" class="custom-button">

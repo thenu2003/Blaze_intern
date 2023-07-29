@@ -160,6 +160,13 @@
                 <h2>{{ average|safe }}</h2>
             </button>
         {% endif %}
+
+        {% if Analyse %}
+            <button class="price-btn">
+                Market Value
+                <h2>{{ Analyse|safe }}</h2>
+            </button>
+        {% endif %}
     
         {% if close_price %}
             <button class="price-btn">
