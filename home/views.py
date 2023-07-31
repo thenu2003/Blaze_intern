@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login, logout
 from django.http import JsonResponse
 import yfinance as yf
 import plotly.graph_objects as go
@@ -26,6 +26,10 @@ def loginn(request):
         else:
             return redirect("signup")
     return render(request, 'login.html')
+
+def logout(request):
+    logout(request)
+    return redirect("/")
 
 def signup(request):
     if request.method=="POST":

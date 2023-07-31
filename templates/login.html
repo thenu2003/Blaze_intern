@@ -107,6 +107,7 @@ button{
     </style>
 </head>
 <body>
+    {% load socialaccount %}
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -124,7 +125,7 @@ button{
 
         <button type="submit">login</button>
         <div class="social">
-          <div class="go"><i class="fab fa-google"></i>  Google</div>
+          <a href="{% provider_login_url 'google' %}?next=/"> <i class="fab fa-google"></i>google</a>
           <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
         </div>
     </form>
