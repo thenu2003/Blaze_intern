@@ -103,6 +103,9 @@ button{
 .social i{
   margin-right: 4px;
 }
+.horizontal-space {
+    margin-right: 50px; /* Adjust the value as needed to control the horizontal space */
+  }
 
     </style>
 </head>
@@ -125,8 +128,10 @@ button{
 
         <button type="submit">login</button>
         <div class="social">
+          <span class="horizontal-space"></span>
           <a href="{% provider_login_url 'google' %}?next=/"> <i class="fab fa-google"></i>google</a>
-          <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
+          <span class="horizontal-space"></span>
+          <a href="{% provider_login_url 'facebook'  %}?next=/"><i class="fab fa-facebook"></i>Facebook</a>
         </div>
     </form>
 </body>

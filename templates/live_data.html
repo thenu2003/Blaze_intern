@@ -161,13 +161,20 @@
             </button>
         {% endif %}
 
-        {% if Analyse %}
+        {% if AnalyseHigh %}
             <button class="price-btn">
                 Market Value
-                <h2>{{ Analyse|safe }}</h2>
+                <h2>{{ AnalyseHigh|safe }}</h2>
             </button>
         {% endif %}
-    
+        
+        {% if AnalyseLow %}
+            <button class="price-btn">
+                Market Value
+                <h2>{{ AnalyseLow|safe }}</h2>
+            </button>
+        {% endif %}
+
         {% if close_price %}
             <button class="price-btn">
                 Close Value

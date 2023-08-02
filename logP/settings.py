@@ -17,7 +17,7 @@ SITE_ID = 2
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',    
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -27,10 +27,18 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google"
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook"
 ]
 SOCIAL_ACCOUNT_PROVIDERS = {
     "google":{
+        "SCOPE":[ 
+            "profile",
+            "email"
+    ],
+    "AUTH_PARAMS": {"access_type": "online"}
+    },
+    "facebook":{
         "SCOPE":[ 
             "profile",
             "email"
@@ -115,5 +123,8 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 LOGIN_REDIRECT_URL = "/options/"
+
 LOGOUT_REDIRECT_URL = "/"

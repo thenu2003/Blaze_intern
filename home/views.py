@@ -106,18 +106,23 @@ def live_data(request):
             total_market_cap = average_market_cap.sum()
             reference_value = 1e12
             if total_market_cap >= reference_value:
-                market_status = "high"
+                market_high = "high"
+                market_low = None
             else:
-                market_status = "low"
-            analyse = f"The market is considered {market_status}."
-
+                market_low = "low"
+                market_high = None
+            if market_high:
+                analyse = f"The market is considered {market_high}."
+            else:
+                analyse = f"The market is considered {market_low}."
             context = {
                 'selected_option': default_option,
                 'graph_html': graph_html,
                 'average': average_price,
                 'close_price': close,
                 'Current_price': current,
-                'Analyse': analyse,
+                'AnalyseHigh': analyse,
+                'AnalyseLow' : analyse
             }
 
             return render(request, 'live_data.html', context)
